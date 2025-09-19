@@ -41,102 +41,82 @@ export default function Chatsec() {
     */
 
   return (
-    <div className="flex flex-col h-screen w-screen bg-[#292a2d]">
-
-        {/* ---------------------THESE ARE THE CHAT SECTION ONLY FOR DISPLAYING MESSAGES AND THE LIKES----------------------- */}
-      <div className=" overflow-y-auto flex-1 justify-center items-center ml-[60px] bg-[#292a2d]" style={{paddingTop:50, paddingInline:70 , scrollbarWidth: "none", msOverflowStyle: "none" }}>
-          <div>
-            <h2 style={{fontFamily:"'Inter', 'Segoe UI', 'Helvetica Neue', sans-serif", color: "wheat"}}>
-              Chat Me
-            </h2>
-          </div>
-
-          <div>
-            {
-                 messages.map((item , index)=>{
-                  return(
-                  <motion.div 
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{
-                        duration: 0.5,
-                        delay: 0.2,
-                        ease: [0, 0.51, 0.1, 1.01],
-                    }}
-                   className="flex items-start justify-end space-x-2 mb-[20px]"
-                   key={index}
-                   
-                  > 
-                      <div 
-                        className="text-white p-3 rounded-lg rounded-tr-none shadow max-w-xs" 
-                        style={{
-                              backgroundColor:"#D3D3D3", 
-                              padding:10, 
-                              borderRadius:10, 
-                              fontFamily:"'Inter', 'Segoe UI', 'Helvetica Neue', sans-serif",
-                              flexDirection: "row",
-                              margin:3
-                            }}
-                       
-                      >
-                        <p>
-                          {item}
-                        </p>
-                      </div>
-                  </motion.div>
-                  );
-                })
-              }
-          </div>
-
-          <div className="w-[400px]" >
-            {
-                 outPut.map((item , index)=>{
-                  return(
-                  <motion.div 
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{
-                        duration: 0.5,
-                        delay: 0.2,
-                        ease: [0, 0.51, 0.1, 1.01],
-                    }}
-                   className="flex items-start justify-end space-x-2 mb-[20px]"
-                   key={index}
-                   
-                  > 
-                  <div>
-                    <img 
-                    src={side_logo} 
-                    alt="" 
-                    className="w-[35px] h-[35px] rounded-sm m-[10px]"/>
-                  </div>
-                      <div 
-                        className="bg-white text-gray-800 p-3 rounded-lg rounded-tl-none shadow max-w-xs" 
-                        style={{color:"white" ,fontFamily:"'Inter', 'Segoe UI', 'Helvetica Neue', sans-serif"}}
-                      >
-                        <p>
-                          {item}
-                        </p>
-                      </div>
-                  </motion.div>
-                  );
-                })
-              }
-
-      </div>
-            
-      </div>
+  <div className="flex flex-col h-screen w-screen bg-[#292a2d]">
+    {/* ---------------- CHAT SECTION ---------------- */}
+    <div
+      className="overflow-y-auto flex-col flex-1 ml-[60px] bg-[#292a2d]"
+      style={{
+        paddingTop: 50,
+        paddingInline: 70,
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
+        borderWidth: 10,
+        borderColor: "white",
+      }}
+    >
       <div>
-          <Input 
-            messages={messages} 
-            setMessages={setMessages}
-            outPut={outPut}
-            outPutMessage={outPutMessage}
-          />
-
-          {/* <Search /> */}
+        <h2
+          style={{
+            fontFamily: "'Inter', 'Segoe UI', 'Helvetica Neue', sans-serif",
+            color: "wheat",
+          }}
+        >
+          Chat Me
+        </h2>
       </div>
+
+      {/* 👇 Merge into one timeline for display */}
+      {[
+        ...messages.map((m, i) => ({ id: i, sender: "me", text: m })),
+        ...outPut.map((m, i) => ({ id: i + messages.length, sender: "bot", text: m })),
+      ].map((item) => (
+        <motion.div
+          key={item.id}
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{
+            duration: 0.5,
+            delay: 0.2,
+            ease: [0, 0.51, 0.1, 1.01],
+          }}
+          className={`flex mb-[20px] ${
+            item.sender === "me" ? "justify-end" : "items-start"
+          }`}
+        >
+          {item.sender === "bot" && (
+            <img
+              src={side_logo}
+              alt=""
+              className="w-[35px] h-[35px] rounded-sm m-[10px]"
+            />
+          )}
+
+          <div
+            className="p-3 rounded-lg shadow max-w-xs"
+            style={{
+              backgroundColor: item.sender === "me" ? "#D3D3D3" : "#1E1F22",
+              color: item.sender === "me" ? "black" : "white",
+              borderRadius: 10,
+              padding:15,
+              fontFamily: "'Inter', 'Segoe UI', 'Helvetica Neue', sans-serif",
+            }}
+          >
+            <p>{item.text}</p>
+          </div>
+        </motion.div>
+      ))}
     </div>
-  )
+
+    {/* Input section */}
+    <div>
+      <Input
+        messages={messages}
+        setMessages={setMessages}
+        outPut={outPut}
+        outPutMessage={outPutMessage}
+      />
+    </div>
+  </div>
+);
+
 }

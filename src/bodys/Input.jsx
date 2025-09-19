@@ -20,12 +20,17 @@ export default function Input( {messages , setMessages , outPut , outPutMessage}
    // -- This is the function for the gemini
     const ai = new GoogleGenAI({ apiKey: `AIzaSyBy8o9WYjjYJNNoVbASJbrut9z72mVS7wg` });
     async function api_CALLING() {
-      const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash",
-        contents: `${inp}`,
-      });
-      outPutMessage([...outPut , response.text]);
-      console.log(response.text);
+
+    
+        const response = await ai.models.generateContent({
+          model: "gemini-2.5-flash",
+          contents: `${inp}`,
+        });
+        outPutMessage([...outPut , response.text]);
+        console.log(response.text);
+
+     
+      
     }
 
 
@@ -56,7 +61,7 @@ export default function Input( {messages , setMessages , outPut , outPutMessage}
         className="z-10 flex items-center justify-center "
       >
 
-        <div className=" p-[10px] w-[70%] bg-[#404045]  m-[10px]" style={{ justifySelf: "center" , borderRadius:20, marginLeft: 'auto', marginRight: 'auto', }}>
+        <div className=" p-[10px] w-[60%] bg-[#404045] m-[10px]" style={{ justifySelf: "center" , borderRadius:20, marginLeft: 'auto', marginRight: 'auto', }}>
          <div className="relative">
           <input
             value={inp}
